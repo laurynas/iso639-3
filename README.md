@@ -17,7 +17,7 @@ Database is generated (see `cmd/generator.go`) from official ISO 639-3 data. See
 ## Installation
 
 ```
-go get github.com/barbashov/iso639-3
+go get github.com/KimWang906/iso639-3
 ```
 
 ## Examples
