@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"go/format"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -101,16 +100,26 @@ func getInput(uri string) io.Reader {
 		Timeout: httpTimeout,
 	}
 
-	r, err := httpClient.Get(uri)
+	req, err := http.NewRequest("GET", uri, nil)
+	if err != nil {
+		log.Fatalf("Can't create request for '%s': %v", uri, err)
+	}
+
+	req.Header.Set("User-Agent", "USER")
+
+	r, err := httpClient.Do(req)
 	if err != nil {
 		log.Fatalf("Can't download input file '%s': %v", uri, err)
 	}
 	defer r.Body.Close()
 
-	bs, err := ioutil.ReadAll(r.Body)
+	bs, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatalf("Error reading response from '%s': %v", uri, err)
 	}
+
+	fmt.Println(r.StatusCode)
+	fmt.Println(string(bs))
 
 	return bytes.NewReader(bs)
 }
