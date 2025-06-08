@@ -71,19 +71,45 @@ func FromPart1Code(code string) *Language {
 	return nil
 }
 
+// FromRetiredCode looks up language for a retired code by following the chain of retirements.
+// If the code was retired multiple times, it will follow the chain until it finds a non-retired code.
+// Returns nil if the code is not retired or if the final code is not found.
+func FromRetiredCode(code string) *Language {
+	if retired := IsRetired(code); retired != nil {
+		if retired.ChangeTo == "" {
+			return nil
+		}
+		// Recursively check if the new code is also retired
+		if newLang := FromRetiredCode(retired.ChangeTo); newLang != nil {
+			return newLang
+		}
+		// If the new code is not retired, return it
+		return FromPart3Code(retired.ChangeTo)
+	}
+	return nil
+}
+
 // FromAnyCode looks up language for given code.
 // For three-symbol codes it tries ISO639-3 first, then ISO639-2.
 // For two-symbol codes it tries ISO639-1.
+// If no match is found and the code is retired, returns the language it was changed to.
 // Returns nil if not found
 func FromAnyCode(code string) *Language {
 	codeLen := len(code)
 
 	if codeLen == 3 {
-		ret := FromPart3Code(code)
-		if ret == nil {
-			ret = FromPart2Code(code)
+		// Try ISO639-3 first
+		if lang := FromPart3Code(code); lang != nil {
+			return lang
 		}
-		return ret
+
+		// Then try ISO639-2
+		if lang := FromPart2Code(code); lang != nil {
+			return lang
+		}
+
+		// Finally check if it's a retired code
+		return FromRetiredCode(code)
 	}
 
 	if codeLen == 2 {

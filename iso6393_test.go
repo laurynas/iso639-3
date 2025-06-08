@@ -85,7 +85,8 @@ func TestFromAnyCode(t *testing.T) {
 		{"ru", "Russian"},
 		{"de", "German"},
 		{"ger", "German"},
-		{"123", ""}, // doesn't exist
+		{"bgh", "Bugan"}, // retired code that was changed to "bbh"
+		{"123", ""},      // doesn't exist
 	}
 	for _, tt := range tests {
 		t.Run(tt.code, func(t *testing.T) {
@@ -148,6 +149,51 @@ func TestIsRetired(t *testing.T) {
 				}
 			} else if actual != nil {
 				t.Errorf("IsRetired() = %v, expected nil", actual)
+			}
+		})
+	}
+}
+
+func TestFromRetiredCode(t *testing.T) {
+	tests := []struct {
+		code         string
+		expectedName string
+	}{
+		{"bgh", "Bugan"}, // Single retirement
+		{"abc", ""},      // Not retired
+		{"eng", ""},      // Not retired
+	}
+	for _, tt := range tests {
+		t.Run(tt.code, func(t *testing.T) {
+			actual := FromRetiredCode(tt.code)
+
+			if tt.expectedName == "" {
+				if actual != nil {
+					t.Errorf("FromRetiredCode() = %v, expected nil", actual)
+				}
+			} else if actual == nil || actual.Name != tt.expectedName {
+				t.Errorf("FromRetiredCode() = %v, expected Language with english name %v", actual, tt.expectedName)
+			}
+		})
+	}
+}
+
+func BenchmarkFromAnyCode(b *testing.B) {
+	benchmarks := []struct {
+		name string
+		code string
+	}{
+		{"ISO639-3", "eng"},
+		{"ISO639-2", "ger"},
+		{"ISO639-1", "en"},
+		{"Retired", "bgh"},
+		{"NonExistent", "xyz"},
+	}
+
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				FromAnyCode(bm.code)
 			}
 		})
 	}
