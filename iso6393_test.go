@@ -127,7 +127,7 @@ func TestFromName(t *testing.T) {
 	}
 }
 
-func TestIsRetired(t *testing.T) {
+func TestGetRetired(t *testing.T) {
 	tests := []struct {
 		code            string
 		expectedRetired bool
@@ -139,7 +139,7 @@ func TestIsRetired(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.code, func(t *testing.T) {
-			actual := IsRetired(tt.code)
+			actual := GetRetired(tt.code)
 
 			if tt.expectedRetired {
 				if actual == nil {

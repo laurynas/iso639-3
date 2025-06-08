@@ -71,11 +71,19 @@ func FromPart1Code(code string) *Language {
 	return nil
 }
 
+// GetRetired returns information about a retired ISO639-3 code.
+// Returns nil if the code is not retired.
+func GetRetired(code string) *RetiredCode {
+	if r, ok := RetiredCodes[code]; ok {
+		return &r
+	}
+	return nil
+}
+
 // FromRetiredCode looks up language for a retired code by following the chain of retirements.
-// If the code was retired multiple times, it will follow the chain until it finds a non-retired code.
 // Returns nil if the code is not retired or if the final code is not found.
 func FromRetiredCode(code string) *Language {
-	if retired := IsRetired(code); retired != nil {
+	if retired := GetRetired(code); retired != nil {
 		if retired.ChangeTo == "" {
 			return nil
 		}
@@ -126,15 +134,6 @@ func FromName(name string) *Language {
 		if l.Name == name {
 			return &l
 		}
-	}
-	return nil
-}
-
-// IsRetired checks if a given ISO639-3 code is retired.
-// Returns the RetiredCode if found, nil otherwise
-func IsRetired(code string) *RetiredCode {
-	if r, ok := RetiredCodes[code]; ok {
-		return &r
 	}
 	return nil
 }

@@ -35,7 +35,7 @@ iso639_3.FromPart3Code("deu") // returns object representing German language loo
 iso639_3.FromPart2Code("ger") // returns object representing German language looking by ISO 639-2 code
 iso639_3.FromPart1Code("de") // returns object representing German language looking by ISO 639-1 code
 iso639_3.FromName("English") // returns object representing English language looking by language name
-iso639_3.IsRetired("old") // returns information about a retired code if it exists
+iso639_3.GetRetired("sdi") // returns information about a retired code if it exists
 ```
 
 # Update databases
