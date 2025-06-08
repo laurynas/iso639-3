@@ -41,8 +41,16 @@ type RetiredCode struct {
 	Effective string // The date the retirement became effective
 }
 
+// MacrolanguageMapping represents a mapping between a macrolanguage and its individual languages
+type MacrolanguageMapping struct {
+	MacrolanguageId string // The macrolanguage identifier
+	IndividualId    string // The individual language identifier
+	Status          string // Status of the individual language (A=Active, R=Retired)
+}
+
 //go:generate go run cmd/generator.go -o lang-db.go
 //go:generate go run cmd/retirement-generator/main.go -o retired-db.go
+//go:generate go run cmd/macrolanguage-generator/main.go -o macrolanguage-db.go
 
 // FromPart3Code looks up language for given ISO639-3 three-symbol code.
 // Returns nil if not found
@@ -134,6 +142,14 @@ func FromName(name string) *Language {
 		if l.Name == name {
 			return &l
 		}
+	}
+	return nil
+}
+
+// GetMacrolanguageMappings returns the macrolanguage mapping for an individual language if it exists
+func GetMacrolanguageMappings(code string) *MacrolanguageMapping {
+	if m, ok := MacrolanguageMappings[code]; ok {
+		return &m
 	}
 	return nil
 }

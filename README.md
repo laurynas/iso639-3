@@ -16,6 +16,8 @@ Database is generated (see `cmd/generator.go`) from official ISO 639-3 data. See
 
 The retired language codes database is generated (see `cmd/retirement-generator/main.go`) from the official ISO 639-3 Retirements data.
 
+The macrolanguage mappings database is generated (see `cmd/macrolanguage-generator/main.go`) from the official ISO 639-3 Macrolanguage Mappings data.
+
 ## Installation
 
 ```
@@ -29,6 +31,7 @@ iso639_3.LanguagesPart3 // returns ISO 639-3 languages lookup table
 iso639_3.LanguagesPart2 // returns ISO 639-2 languages lookup table
 iso639_3.LanguagesPart1 // returns ISO 639-1 languages lookup table
 iso639_3.RetiredCodes // returns retired ISO 639-3 codes lookup table
+iso639_3.MacrolanguageMappings // returns macrolanguage mappings lookup table
 
 iso639_3.FromAnyCode("eng") // returns object representing English language looking through ISO 639-3, ISO 639-2 and ISO 639-1 codes
 iso639_3.FromPart3Code("deu") // returns object representing German language looking by ISO 639-3 code
@@ -36,6 +39,7 @@ iso639_3.FromPart2Code("ger") // returns object representing German language loo
 iso639_3.FromPart1Code("de") // returns object representing German language looking by ISO 639-1 code
 iso639_3.FromName("English") // returns object representing English language looking by language name
 iso639_3.GetRetired("sdi") // returns information about a retired code if it exists
+iso639_3.GetMacrolanguageMappings("arb") // returns macrolanguage mapping for Standard Arabic if it exists
 ```
 
 # Update databases
