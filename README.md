@@ -1,8 +1,8 @@
 # ISO 639-3
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/barbashov/iso639-3?status.svg)](https://pkg.go.dev/github.com/barbashov/iso639-3)
-[![Test](https://github.com/barbashov/iso639-3/actions/workflows/test.yml/badge.svg)](https://github.com/barbashov/iso639-3/actions/workflows/test.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/barbashov/iso639-3)](https://goreportcard.com/report/github.com/barbashov/iso639-3)
+[![Go Reference](https://pkg.go.dev/badge/github.com/laurynas/iso639-3?status.svg)](https://pkg.go.dev/github.com/laurynas/iso639-3)
+[![Test](https://github.com/laurynas/iso639-3/actions/workflows/test.yml/badge.svg)](https://github.com/laurynas/iso639-3/actions/workflows/test.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/laurynas/iso639-3)](https://goreportcard.com/report/github.com/laurynas/iso639-3)
 
 A database of ISO 639-3, ISO 639-2 and ISO 639-1 languages.
 
@@ -17,7 +17,7 @@ Database is generated (see `cmd/generator.go`) from official ISO 639-3 data. See
 ## Installation
 
 ```
-go get github.com/KimWang906/iso639-3
+go get github.com/laurynas/iso639-3
 ```
 
 ## Examples
