@@ -125,3 +125,30 @@ func TestFromName(t *testing.T) {
 		})
 	}
 }
+
+func TestIsRetired(t *testing.T) {
+	tests := []struct {
+		code            string
+		expectedRetired bool
+		expectedReason  string
+	}{
+		{"fri", true, "C"}, // Western Frisian - Changed to Frysk
+		{"eng", false, ""}, // English - Not retired
+		{"abc", false, ""}, // Non-existent code
+	}
+	for _, tt := range tests {
+		t.Run(tt.code, func(t *testing.T) {
+			actual := IsRetired(tt.code)
+
+			if tt.expectedRetired {
+				if actual == nil {
+					t.Errorf("IsRetired() = nil, expected RetiredCode")
+				} else if actual.RetReason != tt.expectedReason {
+					t.Errorf("IsRetired() = %v, expected RetiredCode with reason %v", actual, tt.expectedReason)
+				}
+			} else if actual != nil {
+				t.Errorf("IsRetired() = %v, expected nil", actual)
+			}
+		})
+	}
+}

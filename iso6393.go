@@ -31,7 +31,18 @@ type Language struct {
 	Comment      string
 }
 
+// RetiredCode represents a retired ISO 639-3 language code
+type RetiredCode struct {
+	Id        string // The retired language identifier
+	RefName   string // Reference name of the retired language
+	RetReason string // Reason for retirement (C=Change, D=Duplicate, N=Nonexistent, S=Split, M=Merge)
+	ChangeTo  string // The new language identifier to use instead
+	RetRemedy string // Instructions for updating an implementation
+	Effective string // The date the retirement became effective
+}
+
 //go:generate go run cmd/generator.go -o lang-db.go
+//go:generate go run cmd/retirement-generator/main.go -o retired-db.go
 
 // FromPart3Code looks up language for given ISO639-3 three-symbol code.
 // Returns nil if not found
@@ -89,6 +100,15 @@ func FromName(name string) *Language {
 		if l.Name == name {
 			return &l
 		}
+	}
+	return nil
+}
+
+// IsRetired checks if a given ISO639-3 code is retired.
+// Returns the RetiredCode if found, nil otherwise
+func IsRetired(code string) *RetiredCode {
+	if r, ok := RetiredCodes[code]; ok {
+		return &r
 	}
 	return nil
 }
